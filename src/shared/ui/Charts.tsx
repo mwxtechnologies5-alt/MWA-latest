@@ -66,53 +66,88 @@ export function AnimatedPieChart({ data, title, size = 160, className = "" }: An
   const ref = useRef<HTMLDivElement>(null);
   const total = data.reduce((sum, d) => sum + d.value, 0);
   const radius = size / 2 - 10;
-  const circumference = 2 * Math.PI * radius;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
-      },
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
       { threshold: 0.3 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
-  let cumulativePercent = 0;
+  const cx = size / 2;
+  const cy = size / 2;
+  const strokeWidth = 16;
+  const GAP_DEG = 3;
+
+  const polar = (deg: number) => {
+    const rad = ((deg - 90) * Math.PI) / 180;
+    return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) };
+  };
+
+  // Pre-calculate segment angles
+  let cumDeg = 0;
+  const segments = data.map((d) => {
+    const spanDeg = (d.value / total) * 360;
+    const start = cumDeg + GAP_DEG / 2;
+    const end = cumDeg + spanDeg - GAP_DEG / 2;
+    cumDeg += spanDeg;
+    return { ...d, startDeg: start, endDeg: end };
+  });
 
   return (
     <div ref={ref} className={`p-6 rounded-2xl bg-card/40 border border-[#8b5cf6]/10 ${className}`}>
-      {title && <h3 className="text-sm font-semibold text-foreground mb-4 text-center font-heading">{title}</h3>}
+      {title && (
+        <h3 className="text-sm font-semibold text-foreground mb-4 text-center font-heading">
+          {title}
+        </h3>
+      )}
       <div className="flex flex-col items-center">
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-          <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="#8b5cf6" strokeWidth="2" opacity="0.1" />
-          {data.map((segment, index) => {
-            const percent = segment.value / total;
-            const strokeDasharray = circumference * percent;
-            const strokeDashoffset = circumference * (1 - percent);
-            const rotation = cumulativePercent * 360 - 90;
-            cumulativePercent += percent;
+          {/* Track ring */}
+          <circle
+            cx={cx} cy={cy} r={radius}
+            fill="none" stroke="#8b5cf6" strokeWidth="2" opacity="0.1"
+          />
+          {segments.map((seg, index) => {
+            const spanDeg = seg.endDeg - seg.startDeg;
+            if (spanDeg <= 0) return null;
+            const large = spanDeg > 180 ? 1 : 0;
+
+            // Animate: start collapsed at startDeg, expand to endDeg
+            const startPt = polar(seg.startDeg);
+
+            // We animate endDeg from startDeg → actual endDeg via a custom path
+            // Instead, use stroke-dasharray on a single arc path
+            // Arc path from startDeg to endDeg
+            const endPt = polar(seg.endDeg);
+            const d = [
+              `M ${startPt.x} ${startPt.y}`,
+              `A ${radius} ${radius} 0 ${large} 1 ${endPt.x} ${endPt.y}`,
+            ].join(" ");
+
+            // Approximate arc length for dasharray animation
+            const arcLength = (spanDeg / 360) * 2 * Math.PI * radius;
 
             return (
-              <motion.circle
+              <motion.path
                 key={index}
-                cx={size/2}
-                cy={size/2}
-                r={radius}
+                d={d}
                 fill="none"
-                stroke={segment.color}
-                strokeWidth="16"
+                stroke={seg.color}
+                strokeWidth={strokeWidth}
                 strokeLinecap="round"
-                strokeDasharray={`${strokeDasharray} ${circumference}`}
-                transform={`rotate(${rotation} ${size/2} ${size/2})`}
-                initial={{ strokeDashoffset: circumference }}
-                animate={{ strokeDashoffset: isVisible ? strokeDashoffset : circumference }}
+                strokeDasharray={arcLength}
+                initial={{ strokeDashoffset: arcLength }}
+                animate={{ strokeDashoffset: isVisible ? 0 : arcLength }}
                 transition={{ duration: 1, delay: index * 0.2, ease: "easeOut" }}
               />
             );
           })}
         </svg>
+
+        {/* Dot legend — identical to original */}
         <div className="flex flex-wrap justify-center gap-3 mt-4">
           {data.map((item, index) => (
             <div key={index} className="flex items-center gap-1.5">
