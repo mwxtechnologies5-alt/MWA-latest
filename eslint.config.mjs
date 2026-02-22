@@ -1,4 +1,4 @@
-import { FlatCompat } from '@eslint/eslintrc'
+import { FlatCompat } from '@eslint/eslintrc';
  
 const compat = new FlatCompat({
   // import.meta.dirname is available after Node.js v20.11.0
@@ -10,6 +10,9 @@ const eslintConfig = [
     extends: ['next'],
     plugins: ['import'],
   }),
+  {
+    ignores: ['src/visual-edits/**'],
+  },
   {
     rules: {
       'react/no-unescaped-entities': 'off',
