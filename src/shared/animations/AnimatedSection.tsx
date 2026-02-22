@@ -9,10 +9,18 @@ interface AnimatedSectionProps {
   className?: string;
   delay?: number;
   duration?: number;
-  animation?: "fadeUp" | "fadeDown" | "fadeLeft" | "fadeRight" | "scale" | "blur";
+  animation?:
+    | "fadeUp"
+    | "fadeDown"
+    | "fadeLeft"
+    | "fadeRight"
+    | "scale"
+    | "blur";
+  as?: any;
+  id?: string;
 }
 
-const animations: Record<string, { initial: Variant; animate: Variant }> = {
+const animations: Record<string, { initial: any; animate: any }> = {
   fadeUp: {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
@@ -164,7 +172,10 @@ export function CountUp({
       let startTime: number;
       const step = (timestamp: number) => {
         if (!startTime) startTime = timestamp;
-        const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+        const progress = Math.min(
+          (timestamp - startTime) / (duration * 1000),
+          1,
+        );
         setCount(Math.floor(progress * end));
         if (progress < 1) {
           requestAnimationFrame(step);
@@ -189,7 +200,11 @@ interface TextRevealProps {
   delay?: number;
 }
 
-export function TextReveal({ children, className = "", delay = 0 }: TextRevealProps) {
+export function TextReveal({
+  children,
+  className = "",
+  delay = 0,
+}: TextRevealProps) {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.5,
