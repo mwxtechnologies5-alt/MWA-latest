@@ -84,15 +84,24 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0 cursor-pointer">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 group flex-shrink-0 cursor-pointer"
+          >
             <div className="relative w-9 h-9 md:w-10 md:h-10">
               <div className="absolute inset-0 bg-gradient-to-br from-[#8b5cf6] via-[#a78bfa] to-[#7c3aed] rounded-xl group-hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-shadow duration-300" />
               <div className="absolute inset-[3px] bg-background rounded-lg" />
-              <span className="absolute inset-0 flex items-center justify-center text-base md:text-lg font-bold bg-gradient-to-r from-[#8b5cf6] to-[#a78bfa] bg-clip-text text-transparent font-heading">M</span>
+              <span className="absolute inset-0 flex items-center justify-center text-base md:text-lg font-bold bg-gradient-to-r from-[#8b5cf6] to-[#a78bfa] bg-clip-text text-transparent font-heading">
+                M
+              </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-sm md:text-base font-bold text-foreground leading-tight font-heading">MWX</span>
-              <span className="text-[10px] md:text-xs text-muted-foreground leading-tight font-body">Technologies</span>
+              <span className="text-sm md:text-base font-bold text-foreground leading-tight font-heading">
+                MWX
+              </span>
+              <span className="text-[10px] md:text-xs text-muted-foreground leading-tight font-body">
+                Technologies
+              </span>
             </div>
           </Link>
 
@@ -102,13 +111,16 @@ export function Navbar() {
                 <div
                   key={link.label}
                   className="relative"
-                  onMouseEnter={() => link.hasDropdown && handleMouseEnter(link.label)}
+                  onMouseEnter={() =>
+                    link.hasDropdown && handleMouseEnter(link.label)
+                  }
                   onMouseLeave={handleMouseLeave}
                 >
                   <Link
                     href={link.href}
                     className={`relative px-3 xl:px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center gap-1 rounded-full font-body cursor-pointer ${
-                      pathname === link.href || (link.hasDropdown && pathname.startsWith(link.href))
+                      pathname === link.href ||
+                      (link.hasDropdown && pathname.startsWith(link.href))
                         ? "text-[#8b5cf6] bg-[#8b5cf6]/10"
                         : "text-foreground/70 hover:text-foreground hover:bg-foreground/5"
                     }`}
@@ -164,8 +176,8 @@ export function Navbar() {
             </div>
           </div>
 
-            <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-              <Link
+          <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
+            <Link
               href="/contact"
               className="relative px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-[#8b5cf6] to-[#7c3aed] rounded-full overflow-hidden group transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] active:scale-95 font-body cursor-pointer"
             >
@@ -174,8 +186,8 @@ export function Navbar() {
             </Link>
           </div>
 
-            <div className="flex lg:hidden items-center gap-2">
-              <button
+          <div className="flex lg:hidden items-center gap-2">
+            <button
               onClick={() => setIsOpen(!isOpen)}
               className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-[#8b5cf6]/10 border border-[#8b5cf6]/20 transition-colors hover:bg-[#8b5cf6]/20 active:scale-95 cursor-pointer"
               aria-label="Toggle menu"
@@ -232,7 +244,7 @@ export function Navbar() {
                         <button
                           onClick={() =>
                             setActiveDropdown(
-                              activeDropdown === link.label ? null : link.label
+                              activeDropdown === link.label ? null : link.label,
                             )
                           }
                           className={`w-full flex items-center justify-between px-4 py-3.5 text-base font-medium rounded-xl transition-colors font-body cursor-pointer ${
@@ -296,7 +308,7 @@ export function Navbar() {
                     )}
                   </motion.div>
                 ))}
-                
+
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -318,7 +330,7 @@ export function Navbar() {
                   className="pt-4 border-t border-[#8b5cf6]/10"
                 >
                   <p className="text-center text-muted-foreground text-xs font-body">
-                    Ã‚Â© {new Date().getFullYear()} MWX Technologies
+                    © {new Date().getFullYear()} MWX Technologies
                   </p>
                 </motion.div>
               </div>

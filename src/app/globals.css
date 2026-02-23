@@ -136,6 +136,8 @@
 @layer base {
   * {
     @apply border-border/15 outline-ring/50;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
   
   html {
@@ -294,23 +296,15 @@
 .stagger-5 { animation-delay: 0.5s; }
 
 ::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, hsl(var(--primary)), #7c3aed);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, hsl(var(--accent)), hsl(var(--primary)));
+  display: none;
 }
 
 ::selection {
   background: hsl(var(--primary) / 0.3);
   color: #fff;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
 }

@@ -37,17 +37,12 @@ import {
   FloatingDiamond,
 } from "@/modules/home/animations/3DShapes";
 
-// ─── ScrollTrigger defaults ───────────────────────────────────────────────────
-// "play none none reverse" = animate in on scroll down, reverse out on scroll up
 const ST = {
   start: "top 88%",
   end: "top 15%",
   toggleActions: "play none none reverse" as const,
 };
 
-// ─── Animation helpers ────────────────────────────────────────────────────────
-
-/** Slide up + fade */
 function slideUp(
   target: gsap.TweenTarget,
   trigger: Element,
@@ -68,7 +63,6 @@ function slideUp(
   );
 }
 
-/** Zoom in from slightly small + slight rise */
 function zoomIn(
   target: gsap.TweenTarget,
   trigger: Element,
@@ -90,7 +84,6 @@ function zoomIn(
   );
 }
 
-/** Slide in from left */
 function slideLeft(
   target: gsap.TweenTarget,
   trigger: Element,
@@ -110,7 +103,6 @@ function slideLeft(
   );
 }
 
-/** Slide in from right */
 function slideRight(
   target: gsap.TweenTarget,
   trigger: Element,
@@ -149,11 +141,10 @@ export default function HomePage() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
 
   useEffect(() => {
-    // Immediately hide all scroll-animated elements so there's zero flash
     gsap.set(".g-hidden", { opacity: 0 });
 
     const ctx = gsap.context(() => {
-      // ─── HERO — one-shot timeline (no ScrollTrigger) ─────────────────────
+      // ─── HERO ─────────────────────────────────────────────────────────────
       gsap
         .timeline({ delay: 0.1 })
         .fromTo(
@@ -186,20 +177,14 @@ export default function HomePage() {
           "-=0.1",
         );
 
-      // ─── ABOUT / STATS ───────────────────────────────────────────────────
+      // ─── ABOUT ────────────────────────────────────────────────────────────
       if (aboutRef.current) {
         const el = aboutRef.current;
-
-        // Use individual ScrollTrigger instances per element group so each
-        // one gets its own independent bi-directional play/reverse cycle.
-        // Passing a NodeList to a single fromTo with one trigger means all
-        // elements share one trigger — which is correct — but we need to
-        // make sure we're NOT reusing the same trigger element for different
-        // animation groups, otherwise GSAP merges them and the second group
-        // can get skipped on replay.
-
         slideUp(el.querySelectorAll(".ab-label"), el, { stagger: 0.13 });
-        slideUp(el.querySelectorAll(".ab-h2"), el, { stagger: 0.13, delay: 0.06 });
+        slideUp(el.querySelectorAll(".ab-h2"), el, {
+          stagger: 0.13,
+          delay: 0.06,
+        });
         slideUp(el.querySelector(".ab-desc")!, el, { delay: 0.22, y: 30 });
         zoomIn(el.querySelectorAll(".stat-card"), el, {
           stagger: 0.08,
@@ -212,7 +197,7 @@ export default function HomePage() {
         });
       }
 
-      // ─── SERVICES HEADER ────────────────────────────────────────────────
+      // ─── SERVICES HEADER ──────────────────────────────────────────────────
       if (servicesHeaderRef.current) {
         const el = servicesHeaderRef.current;
         slideUp(el.querySelectorAll(".sv-label, .sv-h2"), el, {
@@ -221,7 +206,7 @@ export default function HomePage() {
         slideUp(el.querySelector(".sv-desc")!, el, { delay: 0.24, y: 28 });
       }
 
-      // ─── SERVICE CARDS ───────────────────────────────────────────────────
+      // ─── SERVICE CARDS ────────────────────────────────────────────────────
       if (serviceCardsRef.current) {
         const el = serviceCardsRef.current;
         slideLeft(el.querySelector(".card-featured")!, el, { delay: 0.05 });
@@ -232,7 +217,7 @@ export default function HomePage() {
         slideUp(el.querySelector(".sv-viewall")!, el, { delay: 0.52, y: 20 });
       }
 
-      // ─── WHY CHOOSE US ───────────────────────────────────────────────────
+      // ─── WHY CHOOSE US ────────────────────────────────────────────────────
       if (whyRef.current) {
         const el = whyRef.current;
         slideLeft(el.querySelector(".why-left")!, el, { delay: 0 });
@@ -244,7 +229,7 @@ export default function HomePage() {
         slideRight(el.querySelector(".why-img")!, el, { delay: 0.08 });
       }
 
-      // ─── ROI SECTION ────────────────────────────────────────────────────
+      // ─── ROI ──────────────────────────────────────────────────────────────
       if (roiRef.current) {
         const el = roiRef.current;
         slideUp(el.querySelectorAll(".roi-label, .roi-h2"), el, {
@@ -257,7 +242,7 @@ export default function HomePage() {
         });
       }
 
-      // ─── CTA BANNER ─────────────────────────────────────────────────────
+      // ─── CTA ──────────────────────────────────────────────────────────────
       if (ctaRef.current) {
         gsap.fromTo(
           ctaRef.current,
@@ -351,35 +336,35 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Hero text – GSAP controls entry, Framer handles parallax */}
+        {/* Hero text */}
         <motion.div
           ref={heroTextRef}
           style={{ y: heroY, opacity: heroOpacity }}
-          className="relative z-10 text-center px-4 max-w-5xl mx-auto pt-16 pointer-events-none"
+          className="relative z-10 text-center px-6 w-full max-w-5xl mx-auto pt-20 pointer-events-none"
         >
           <h1
-            className="hero-t1 g-hidden text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-2 leading-[1.1] text-foreground"
+            className="hero-t1 g-hidden text-[2.75rem] xs:text-5xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-2 leading-[1.08] text-foreground"
             style={{ fontFamily: "var(--font-special)" }}
           >
             Transform Your
           </h1>
           <h1
-            className="hero-t2 g-hidden text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-[1.1] bg-gradient-to-r from-[#8b5cf6] via-[#a78bfa] to-[#7c3aed] bg-clip-text text-transparent"
+            className="hero-t2 g-hidden text-[2.75rem] xs:text-5xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-bold mb-8 leading-[1.08] bg-gradient-to-r from-[#8b5cf6] via-[#a78bfa] to-[#7c3aed] bg-clip-text text-transparent"
             style={{ fontFamily: "var(--font-special)" }}
           >
             Digital Future
           </h1>
           <p
-            className="hero-desc g-hidden text-sm sm:text-base md:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed"
+            className="hero-desc g-hidden text-base sm:text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed px-2"
             style={{ fontFamily: "var(--font-heading)" }}
           >
             We architect comprehensive digital growth strategies for startups,
             enterprises, and Web3 projects. From concept to global dominance.
           </p>
-          <div className="hero-cta g-hidden flex flex-col sm:flex-row gap-3 justify-center pointer-events-auto">
+          <div className="hero-cta g-hidden flex flex-col sm:flex-row gap-4 justify-center pointer-events-auto">
             <Link href="/contact">
               <motion.span
-                className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-[#8b5cf6] to-[#7c3aed] rounded-full cursor-pointer hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-shadow duration-300"
+                className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-[#8b5cf6] to-[#7c3aed] rounded-full cursor-pointer hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-shadow duration-300"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
               >
@@ -388,7 +373,7 @@ export default function HomePage() {
             </Link>
             <Link href="/services">
               <motion.span
-                className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-foreground bg-foreground/5 border border-[#8b5cf6]/30 rounded-full cursor-pointer hover:bg-[#8b5cf6]/10 hover:border-[#8b5cf6]/50 transition-all duration-300"
+                className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-foreground bg-foreground/5 border border-[#8b5cf6]/30 rounded-full cursor-pointer hover:bg-[#8b5cf6]/10 hover:border-[#8b5cf6]/50 transition-all duration-300"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
               >
@@ -428,7 +413,6 @@ export default function HomePage() {
         <FloatingDiamond className="bottom-20 left-[3%] hidden md:block opacity-50" />
 
         <div className="max-w-6xl mx-auto relative">
-          {/* Header */}
           <div className="text-center mb-10 md:mb-14">
             <p className="ab-label g-hidden text-[#8b5cf6] text-xs font-medium tracking-widest uppercase mb-2 font-body">
               Who We Are
@@ -439,7 +423,6 @@ export default function HomePage() {
             <h2 className="ab-h2 g-hidden text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-[#8b5cf6] to-[#a78bfa] bg-clip-text text-transparent font-heading">
               You&apos;ve Been Searching For
             </h2>
-            {/* ✅ FIX: Updated from generic placeholder to accurate brand description */}
             <p className="ab-desc g-hidden text-muted-foreground text-sm md:text-base max-w-2xl mx-auto font-body">
               MWX Technologies is a full-stack digital agency that blends
               creative strategy with cutting-edge technology. We partner with
@@ -500,7 +483,6 @@ export default function HomePage() {
         <FloatingOctahedron className="top-1/2 left-[2%] hidden xl:block opacity-40" />
 
         <div className="max-w-6xl mx-auto relative">
-          {/* Section header */}
           <div ref={servicesHeaderRef} className="text-center mb-10 md:mb-14">
             <p className="sv-label g-hidden text-[#a78bfa] text-xs font-medium tracking-widest uppercase mb-2 font-body">
               Our Services
@@ -511,7 +493,6 @@ export default function HomePage() {
             <h2 className="sv-h2 g-hidden text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-[#a78bfa] to-[#7c3aed] bg-clip-text text-transparent font-heading">
               Growth Solutions
             </h2>
-            {/* ✅ FIX: Updated from placeholder to meaningful services description */}
             <p className="sv-desc g-hidden text-muted-foreground text-sm md:text-base max-w-xl mx-auto font-body">
               From web development and brand identity to performance marketing
               and global PR, we offer end-to-end solutions engineered to
@@ -519,12 +500,11 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Cards — GSAP owns entry animation entirely */}
           <div
             ref={serviceCardsRef}
             className="grid grid-cols-1 lg:grid-cols-12 gap-4"
           >
-            {/* Featured card – slides from left */}
+            {/* Featured card */}
             <Link
               href={services[0]?.href || "#"}
               className="lg:col-span-4 h-full block"
@@ -558,7 +538,7 @@ export default function HomePage() {
               </motion.div>
             </Link>
 
-            {/* 2×2 grid – zoom in */}
+            {/* 2×2 grid */}
             <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {services.slice(1, 5).map((service, index) => {
                 const Icon = service.icon;
@@ -615,7 +595,6 @@ export default function HomePage() {
 
         <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-20 relative">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            {/* Left — slides from left */}
             <div className="why-left g-hidden max-w-xl">
               <p className="text-[#8b5cf6] text-xs font-medium tracking-widest uppercase mb-3 font-body">
                 Why Choose Us
@@ -659,7 +638,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right image — slides from right */}
             <div className="why-img g-hidden w-full flex justify-center md:justify-end">
               <div className="w-full max-w-md rounded-2xl overflow-hidden">
                 <img
@@ -694,12 +672,9 @@ export default function HomePage() {
           </div>
 
           <div className="flex flex-col md:flex-row gap-6 items-stretch">
-            {/* Calculator — natural height, sets the row height */}
             <div className="roi-calc g-hidden w-full md:w-1/2 flex flex-col">
               <ROICalculator />
             </div>
-
-            {/* Metrics — grid that fills remaining height equally */}
             <div
               className="w-full md:w-1/2 grid grid-cols-2 gap-4"
               style={{ gridAutoRows: "1fr" }}

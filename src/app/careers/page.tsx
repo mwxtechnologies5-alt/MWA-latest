@@ -22,28 +22,25 @@ import {
   StaggerItem,
 } from "@/shared/animations/AnimatedSection";
 import { ParallaxBackground } from "@/shared/animations/ParallaxSection";
-import {
-  AnimatedDonutChart,
-  GrowthMetric,
-} from "@/shared/ui/Charts";
+import { AnimatedDonutChart, GrowthMetric } from "@/shared/ui/Charts";
 
 const contactInfo = [
   {
     icon: Mail,
     title: "Email Us",
-    value: "hello@MWXmedia.com",
+    value: "mwxtechnologies5@gmail.com",
     description: "We'll respond within 24 hours",
   },
   {
     icon: Phone,
     title: "Call Us",
-    value: "+1 (555) 123-4567",
+    value: "+91 79058 58145",
     description: "Mon-Fri, 9am-6pm PST",
   },
   {
     icon: MapPin,
     title: "Visit Us",
-    value: "San Francisco, CA",
+    value: "Varanasi, India",
     description: "By appointment only",
   },
   {
@@ -56,8 +53,16 @@ const contactInfo = [
 
 const socialLinks = [
   { icon: Twitter, href: "https://twitter.com/MWXmedia", label: "Twitter" },
-  { icon: Linkedin, href: "https://linkedin.com/company/MWXmedia", label: "LinkedIn" },
-  { icon: Instagram, href: "https://instagram.com/MWXmedia", label: "Instagram" },
+  {
+    icon: Linkedin,
+    href: "https://linkedin.com/company/MWXmedia",
+    label: "LinkedIn",
+  },
+  {
+    icon: Instagram,
+    href: "https://instagram.com/MWXmedia",
+    label: "Instagram",
+  },
   { icon: MessageSquare, href: "https://t.me/MWXmedia", label: "Telegram" },
 ];
 
@@ -77,7 +82,9 @@ export default function ContactPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -131,27 +138,31 @@ export default function ContactPage() {
                 <span className="text-gradient"> Journey</span>
               </h2>
               <p className="text-white/50 mb-8 leading-relaxed">
-                Fill out the form below and one of our growth specialists will get
-                back to you within 24 hours to discuss how we can help achieve your
-                digital goals.
+                Fill out the form below and one of our growth specialists will
+                get back to you within 24 hours to discuss how we can help
+                achieve your digital goals.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-muted-foreground text-sm mb-2">Your Name *</label>
+                    <label className="block text-muted-foreground text-sm mb-2">
+                      Your Name *
+                    </label>
                     <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-3 rounded-xl bg-card/50 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#8b5cf6]/50 transition-colors"
-                        placeholder="John Doe"
-                      />
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl bg-card/50 border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#8b5cf6]/50 transition-colors"
+                      placeholder="John Doe"
+                    />
                   </div>
                   <div>
-                    <label className="block text-muted-foreground text-sm mb-2">Email Address *</label>
+                    <label className="block text-muted-foreground text-sm mb-2">
+                      Email Address *
+                    </label>
                     <input
                       type="email"
                       name="email"
@@ -166,7 +177,9 @@ export default function ContactPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-muted-foreground text-sm mb-2">Company Name</label>
+                    <label className="block text-muted-foreground text-sm mb-2">
+                      Company Name
+                    </label>
                     <input
                       type="text"
                       name="company"
@@ -177,44 +190,81 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-muted-foreground text-sm mb-2">Service Interested In</label>
+                    <label className="block text-muted-foreground text-sm mb-2">
+                      Service Interested In
+                    </label>
                     <select
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#00f0ff]/50 transition-colors"
                     >
-                      <option value="" className="bg-[#0a0a0f]">Select a service</option>
-                      <option value="web-design" className="bg-[#0a0a0f]">Web Design & Development</option>
-                      <option value="mobile-apps" className="bg-[#0a0a0f]">Mobile App Development</option>
-                      <option value="digital-marketing" className="bg-[#0a0a0f]">Digital Marketing</option>
-                      <option value="pr-news" className="bg-[#0a0a0f]">PR & News Publishing</option>
-                      <option value="social-media" className="bg-[#0a0a0f]">Social Media Marketing</option>
-                      <option value="influencer" className="bg-[#0a0a0f]">Influencer Marketing</option>
-                      <option value="other" className="bg-[#0a0a0f]">Other</option>
+                      <option value="" className="bg-[#0a0a0f]">
+                        Select a service
+                      </option>
+                      <option value="web-design" className="bg-[#0a0a0f]">
+                        Web Design & Development
+                      </option>
+                      <option value="mobile-apps" className="bg-[#0a0a0f]">
+                        Mobile App Development
+                      </option>
+                      <option
+                        value="digital-marketing"
+                        className="bg-[#0a0a0f]"
+                      >
+                        Digital Marketing
+                      </option>
+                      <option value="pr-news" className="bg-[#0a0a0f]">
+                        PR & News Publishing
+                      </option>
+                      <option value="social-media" className="bg-[#0a0a0f]">
+                        Social Media Marketing
+                      </option>
+                      <option value="influencer" className="bg-[#0a0a0f]">
+                        Influencer Marketing
+                      </option>
+                      <option value="other" className="bg-[#0a0a0f]">
+                        Other
+                      </option>
                     </select>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-muted-foreground text-sm mb-2">Estimated Budget</label>
+                  <label className="block text-muted-foreground text-sm mb-2">
+                    Estimated Budget
+                  </label>
                   <select
                     name="budget"
                     value={formData.budget}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#00f0ff]/50 transition-colors"
                   >
-                    <option value="" className="bg-[#0a0a0f]">Select your budget range</option>
-                    <option value="under-5k" className="bg-[#0a0a0f]">Under $5,000</option>
-                    <option value="5k-15k" className="bg-[#0a0a0f]">$5,000 - $15,000</option>
-                    <option value="15k-50k" className="bg-[#0a0a0f]">$15,000 - $50,000</option>
-                    <option value="50k-100k" className="bg-[#0a0a0f]">$50,000 - $100,000</option>
-                    <option value="over-100k" className="bg-[#0a0a0f]">Over $100,000</option>
+                    <option value="" className="bg-[#0a0a0f]">
+                      Select your budget range
+                    </option>
+                    <option value="under-5k" className="bg-[#0a0a0f]">
+                      Under $5,000
+                    </option>
+                    <option value="5k-15k" className="bg-[#0a0a0f]">
+                      $5,000 - $15,000
+                    </option>
+                    <option value="15k-50k" className="bg-[#0a0a0f]">
+                      $15,000 - $50,000
+                    </option>
+                    <option value="50k-100k" className="bg-[#0a0a0f]">
+                      $50,000 - $100,000
+                    </option>
+                    <option value="over-100k" className="bg-[#0a0a0f]">
+                      Over $100,000
+                    </option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-muted-foreground text-sm mb-2">Project Details *</label>
+                  <label className="block text-muted-foreground text-sm mb-2">
+                    Project Details *
+                  </label>
                   <textarea
                     name="message"
                     value={formData.message}
@@ -226,9 +276,14 @@ export default function ContactPage() {
                   />
                 </div>
 
-                  <Button type="submit" size="lg" className="w-full" icon={<Send className="w-5 h-5" />}>
-                    Send Message
-                  </Button>
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full"
+                  icon={<Send className="w-5 h-5" />}
+                >
+                  Send Message
+                </Button>
               </form>
             </AnimatedSection>
 
@@ -259,7 +314,9 @@ export default function ContactPage() {
                               {info.title}
                             </h3>
                             <p className="text-[#00f0ff]">{info.value}</p>
-                            <p className="text-white/40 text-sm">{info.description}</p>
+                            <p className="text-white/40 text-sm">
+                              {info.description}
+                            </p>
                           </div>
                         </motion.div>
                       </StaggerItem>
@@ -289,38 +346,50 @@ export default function ContactPage() {
                       );
                     })}
                   </div>
-</div>
                 </div>
-              </AnimatedSection>
-            </div>
-          </div>
-        </AnimatedSection>
-
-        <AnimatedSection as="section" className="py-16 px-6 relative">
-          <div className="max-w-7xl mx-auto">
-            <AnimatedSection className="text-center mb-12">
-              <span className="text-[#8b5cf6] text-sm font-medium tracking-widest uppercase mb-4 block">
-                Why Work With Us
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold">
-                Client Success
-                <span className="text-gradient"> Metrics</span>
-              </h2>
+              </div>
             </AnimatedSection>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-md mx-auto">
-              <AnimatedDonutChart value={24} maxValue={48} title="Avg Response Time" subtitle="Hours" color="#8b5cf6" />
-              <AnimatedDonutChart value={98} title="Client Satisfaction" subtitle="Based on surveys" color="#a78bfa" />
-            </div>
           </div>
-        </AnimatedSection>
+        </div>
+      </AnimatedSection>
 
-        <AnimatedSection as="section" className="py-32 px-6 relative bg-[#0d0d14]">
+      <AnimatedSection as="section" className="py-16 px-6 relative">
+        <div className="max-w-7xl mx-auto">
+          <AnimatedSection className="text-center mb-12">
+            <span className="text-[#8b5cf6] text-sm font-medium tracking-widest uppercase mb-4 block">
+              Why Work With Us
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold">
+              Client Success
+              <span className="text-gradient"> Metrics</span>
+            </h2>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-md mx-auto">
+            <AnimatedDonutChart
+              value={24}
+              maxValue={48}
+              title="Avg Response Time"
+              subtitle="Hours"
+              color="#8b5cf6"
+            />
+            <AnimatedDonutChart
+              value={98}
+              title="Client Satisfaction"
+              subtitle="Based on surveys"
+              color="#a78bfa"
+            />
+          </div>
+        </div>
+      </AnimatedSection>
+
+      <AnimatedSection
+        as="section"
+        className="py-32 px-6 relative bg-[#0d0d14]"
+      >
         <div className="max-w-7xl mx-auto">
           <AnimatedSection className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Our Location
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Our Location</h2>
           </AnimatedSection>
           <div className="rounded-2xl overflow-hidden border border-white/10 h-[400px]">
             <iframe

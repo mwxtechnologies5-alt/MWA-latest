@@ -6,13 +6,32 @@ import ClientLayout from "@/shared/layout/ClientLayout";
 import { TrackingScripts } from "@/infrastructure/analytics/TrackingScripts";
 
 export const metadata: Metadata = {
-  title: "MWX Technologies | Digital Marketing & Technology Agency",
-  description: "Transform your brand with MWX Technologies. We deliver cutting-edge web development, mobile apps, digital marketing, PR, and comprehensive growth solutions for startups, enterprises, and Web3 projects.",
-  keywords: "digital marketing, web development, mobile apps, PR, social media marketing, influencer marketing, Web3, blockchain, exchange listing, CMC, CoinGecko",
+  metadataBase: new URL("https://mwxtechnologies.com"),
+  title: {
+    default: "MWX Technologies | Digital Marketing & Technology Agency",
+    template: "%s | MWX Technologies",
+  },
+  description:
+    "Transform your brand with MWX Technologies. We deliver cutting-edge web development, mobile apps, digital marketing, PR, and comprehensive growth solutions for startups, enterprises, and Web3 projects.",
+  keywords:
+    "digital marketing, web development, mobile apps, PR, social media marketing, influencer marketing, Web3, blockchain, exchange listing, CMC, CoinGecko",
   openGraph: {
-    title: "MWX Technologies | Digital Marketing & Technology Agency",
+    title: {
+      default: "MWX Technologies | Digital Marketing & Technology Agency",
+      template: "%s | MWX Technologies",
+    },
     description: "Transform your brand with cutting-edge digital solutions",
+    url: "https://mwxtechnologies.com",
+    siteName: "MWX Technologies",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: {
+      default: "MWX Technologies | Digital Marketing & Technology Agency",
+      template: "%s | MWX Technologies",
+    },
+    description: "Transform your brand with cutting-edge digital solutions",
   },
 };
 
@@ -37,9 +56,7 @@ export default function RootLayout({
       >
         <TrackingScripts />
         <ErrorReporter />
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+        <ClientLayout>{children}</ClientLayout>
         <VisualEditsMessenger />
       </body>
     </html>
