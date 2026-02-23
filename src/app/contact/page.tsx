@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore/lite";
+import { db } from "@/lib/firebase";
 import { motion } from "framer-motion";
 import {
   Mail,
@@ -46,8 +48,16 @@ const contactInfo = [
 
 const socialLinks = [
   { icon: Twitter, href: "https://twitter.com/MWXmedia", label: "Twitter" },
-  { icon: Linkedin, href: "https://linkedin.com/company/MWXmedia", label: "LinkedIn" },
-  { icon: Instagram, href: "https://instagram.com/MWXmedia", label: "Instagram" },
+  {
+    icon: Linkedin,
+    href: "https://linkedin.com/company/MWXmedia",
+    label: "LinkedIn",
+  },
+  {
+    icon: Instagram,
+    href: "https://instagram.com/MWXmedia",
+    label: "Instagram",
+  },
   { icon: MessageSquare, href: "https://t.me/MWXmedia", label: "Telegram" },
 ];
 
@@ -61,20 +71,43 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setIsSubmitting(true);
+    try {
+      await addDoc(collection(db, "contactSubmissions"), {
+        ...formData,
+        createdAt: serverTimestamp(),
+      });
+      alert("Message sent successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        service: "",
+        budget: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("An error occurred while sending your message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
     <div className="relative">
-
       {/* ── HERO ── */}
       <ParallaxBackground
         overlay={false}
@@ -118,7 +151,6 @@ export default function ContactPage() {
         </div>
 
         <div className="max-w-6xl mx-auto relative">
-
           {/* Contact info — open editorial rows */}
           <AnimatedSection>
             <div className="flex items-center gap-4 mb-10">
@@ -137,7 +169,9 @@ export default function ContactPage() {
                     key={index}
                     href={info.href}
                     target={info.icon === MapPin ? "_blank" : undefined}
-                    rel={info.icon === MapPin ? "noopener noreferrer" : undefined}
+                    rel={
+                      info.icon === MapPin ? "noopener noreferrer" : undefined
+                    }
                     className="group relative flex items-start gap-4 px-0 md:px-8 first:pl-0 last:pr-0 py-6 md:py-0 cursor-pointer"
                     whileHover={{ x: 4 }}
                     transition={{ duration: 0.2 }}
@@ -150,7 +184,10 @@ export default function ContactPage() {
 
                     <div
                       className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-transform duration-200 group-hover:scale-110"
-                      style={{ background: `${info.color}12`, border: `1px solid ${info.color}20` }}
+                      style={{
+                        background: `${info.color}12`,
+                        border: `1px solid ${info.color}20`,
+                      }}
                     >
                       <Icon className="w-4 h-4" style={{ color: info.color }} />
                     </div>
@@ -164,7 +201,9 @@ export default function ContactPage() {
                       >
                         {info.value}
                       </p>
-                      <p className="text-white/30 text-xs">{info.description}</p>
+                      <p className="text-white/30 text-xs">
+                        {info.description}
+                      </p>
                     </div>
                   </motion.a>
                 );
@@ -183,7 +222,6 @@ export default function ContactPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-
               {/* Left — form heading */}
               <div className="lg:col-span-4">
                 <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -199,7 +237,9 @@ export default function ContactPage() {
                 {/* Social links */}
                 <div className="flex items-center gap-4 mb-3">
                   <div className="w-6 h-px bg-white/10" />
-                  <span className="text-white/20 text-[10px] tracking-widest uppercase">Follow Us</span>
+                  <span className="text-white/20 text-[10px] tracking-widest uppercase">
+                    Follow Us
+                  </span>
                 </div>
                 <div className="flex gap-2">
                   {socialLinks.map((s) => {
@@ -279,14 +319,33 @@ export default function ContactPage() {
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-xl bg-white/4 border border-white/8 text-white focus:outline-none focus:border-[#00f0ff]/50 transition-colors text-sm"
                       >
-                        <option value="" className="bg-[#0a0a0f]">Select a service</option>
-                        <option value="web-design" className="bg-[#0a0a0f]">Web Design & Development</option>
-                        <option value="mobile-apps" className="bg-[#0a0a0f]">Mobile App Development</option>
-                        <option value="digital-marketing" className="bg-[#0a0a0f]">Digital Marketing</option>
-                        <option value="pr-news" className="bg-[#0a0a0f]">PR & News Publishing</option>
-                        <option value="social-media" className="bg-[#0a0a0f]">Social Media Marketing</option>
-                        <option value="influencer" className="bg-[#0a0a0f]">Influencer Marketing</option>
-                        <option value="other" className="bg-[#0a0a0f]">Other</option>
+                        <option value="" className="bg-[#0a0a0f]">
+                          Select a service
+                        </option>
+                        <option value="web-design" className="bg-[#0a0a0f]">
+                          Web Design & Development
+                        </option>
+                        <option value="mobile-apps" className="bg-[#0a0a0f]">
+                          Mobile App Development
+                        </option>
+                        <option
+                          value="digital-marketing"
+                          className="bg-[#0a0a0f]"
+                        >
+                          Digital Marketing
+                        </option>
+                        <option value="pr-news" className="bg-[#0a0a0f]">
+                          PR & News Publishing
+                        </option>
+                        <option value="social-media" className="bg-[#0a0a0f]">
+                          Social Media Marketing
+                        </option>
+                        <option value="influencer" className="bg-[#0a0a0f]">
+                          Influencer Marketing
+                        </option>
+                        <option value="other" className="bg-[#0a0a0f]">
+                          Other
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -301,12 +360,24 @@ export default function ContactPage() {
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl bg-white/4 border border-white/8 text-white focus:outline-none focus:border-[#00f0ff]/50 transition-colors text-sm"
                     >
-                      <option value="" className="bg-[#0a0a0f]">Select your budget range</option>
-                      <option value="under-5k" className="bg-[#0a0a0f]">Under $5,000</option>
-                      <option value="5k-15k" className="bg-[#0a0a0f]">$5,000 – $15,000</option>
-                      <option value="15k-50k" className="bg-[#0a0a0f]">$15,000 – $50,000</option>
-                      <option value="50k-100k" className="bg-[#0a0a0f]">$50,000 – $100,000</option>
-                      <option value="over-100k" className="bg-[#0a0a0f]">Over $100,000</option>
+                      <option value="" className="bg-[#0a0a0f]">
+                        Select your budget range
+                      </option>
+                      <option value="under-5k" className="bg-[#0a0a0f]">
+                        Under $5,000
+                      </option>
+                      <option value="5k-15k" className="bg-[#0a0a0f]">
+                        $5,000 – $15,000
+                      </option>
+                      <option value="15k-50k" className="bg-[#0a0a0f]">
+                        $15,000 – $50,000
+                      </option>
+                      <option value="50k-100k" className="bg-[#0a0a0f]">
+                        $50,000 – $100,000
+                      </option>
+                      <option value="over-100k" className="bg-[#0a0a0f]">
+                        Over $100,000
+                      </option>
                     </select>
                   </div>
 
@@ -330,8 +401,9 @@ export default function ContactPage() {
                     size="lg"
                     className="w-full"
                     icon={<Send className="w-5 h-5" />}
+                    disabled={isSubmitting}
                   >
-                    Send Message
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </div>
@@ -344,7 +416,6 @@ export default function ContactPage() {
       <section className="py-24 px-6 relative bg-[#0d0d14]">
         <AnimatedSection>
           <div className="max-w-7xl mx-auto">
-
             <div className="flex items-center gap-4 mb-16">
               <div className="w-6 h-px bg-[#8b5cf6]" />
               <span className="text-[#8b5cf6] text-xs font-medium tracking-widest uppercase">
@@ -422,7 +493,10 @@ export default function ContactPage() {
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57648.30079241158!2d82.93007695!3d25.31668245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398e2db76febcf4d%3A0x68a5a9b4e3506a18!2sVaranasi%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
-                  style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
+                  style={{
+                    border: 0,
+                    filter: "invert(90%) hue-rotate(180deg)",
+                  }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -432,7 +506,6 @@ export default function ContactPage() {
           </AnimatedSection>
         </div>
       </section>
-
     </div>
   );
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore/lite";
+import { db } from "@/lib/firebase";
 import { motion } from "framer-motion";
 import {
   Mail,
@@ -76,9 +78,31 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setIsSubmitting(true);
+    try {
+      await addDoc(collection(db, "contactSubmissions"), {
+        ...formData,
+        createdAt: serverTimestamp(),
+      });
+      alert("Message sent successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        service: "",
+        budget: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("An error occurred while sending your message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -281,8 +305,9 @@ export default function ContactPage() {
                   size="lg"
                   className="w-full"
                   icon={<Send className="w-5 h-5" />}
+                  disabled={isSubmitting}
                 >
-                  Send Message
+                  {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
               </form>
             </AnimatedSection>
